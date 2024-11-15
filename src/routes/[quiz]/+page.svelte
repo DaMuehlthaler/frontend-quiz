@@ -17,19 +17,18 @@
 	let showErrorAlert = $state(false); // Zustand für den Fehler-Alert
 
 	function handleSubmit() {
-		if (selectedAnswer === '') {
+		if (selectedAnswer) {
+			if (selectedAnswer === data.questions[currentQuestion].answer) {
+				score++;
+			}
+			submitted = true;
+			data.questions[currentQuestion].selectedAnswer = selectedAnswer;
+		} else {
 			showErrorAlert = true; // Zeige den Fehler-Alert an
 			setTimeout(() => {
 				showErrorAlert = false; // Fehler-Alert nach 3 Sekunden verstecken
 			}, 3000);
-			return; // Verhindere, dass die Frage beantwortet wird, wenn keine Antwort ausgewählt wurde
 		}
-
-		if (selectedAnswer === data.questions[currentQuestion].answer) {
-			score++;
-		}
-		submitted = true;
-		data.questions[currentQuestion].selectedAnswer = selectedAnswer;
 	}
 
 	function nextQuestion() {
@@ -86,7 +85,9 @@
 	{/each}
 
 	<div class="flex flex-col items-center">
-		<button class="btn btn-primary" onclick={handleSubmit}>Submit</button>
+		{#if !submitted}
+			<button class="btn btn-primary" onclick={handleSubmit}>Submit</button>
+		{/if}
 		{#if submitted}
 			<button class="btn btn-primary" onclick={nextQuestion}>Next Question</button>
 		{/if}
