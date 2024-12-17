@@ -20,6 +20,7 @@
 		if (selectedAnswer) {
 			if (selectedAnswer === data.questions[currentQuestion].answer) {
 				score++;
+				localStorage.setItem('score', score);
 			}
 			submitted = true;
 			data.questions[currentQuestion].selectedAnswer = selectedAnswer;
